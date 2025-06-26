@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card p-4">
+  <h3 class="mb-4">Previous Career Suggestions</h3>
+
+  {% if previous_suggestions %}
+    <div class="list-group">
+      {% for suggestion in previous_suggestions %}
+        <div class="list-group-item mb-3">
+          <h5 class="mb-2">Suggestion:</h5>
+          <p>{{ suggestion.suggestion }}</p>
+          <h6 class="mt-3">Your Inputs:</h6>
+          <ul class="list-group list-group-flush mb-3">
+            {% for key, value in suggestion.input_data.items %}
+              <li class="list-group-item d-flex justify-content-between">
+                <strong>{{ key|capfirst }}</strong>
+                <span>{{ value }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+          <p class="text-muted">Submitted on: {{ suggestion.created_at|date:"d M Y, H:i" }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">No previous suggestions found.</div>
+  {% endif %}
+
+  <div class="mt-4 text-center">
+    <a href="{% url 'qualification' %}" class="btn btn-success">Take New Career Quiz</a>
+  </div>
+</div>
+{% endblock %}

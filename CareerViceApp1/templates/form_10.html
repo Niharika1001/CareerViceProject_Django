@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card p-4 form-detail">
+  <h2>10th Class Career Form</h2>
+  <form method="post" action="{% url 'submit_form' %}">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-6 mb-3"><label>Full Name</label><input type="text" name="full_name" class="form-control" required></div>
+      <div class="col-md-6 mb-3"><label>Gender</label>
+        <select name="gender" class="form-control" required>
+          <option value="">Select</option><option>Male</option><option>Female</option><option>Other</option>
+        </select>
+      </div>
+      <div class="col-md-6 mb-3"><label>City</label><input type="text" name="city" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>State</label><input type="text" name="state" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Qualification Status</label>
+        <select name="qualification_status" class="form-control" required>
+          <option value="">Select</option><option>Completed</option><option>Discontinued</option>
+        </select>
+      </div>
+      <div class="col-md-6 mb-3"><label>Rank (if any)</label><input type="text" name="rank" class="form-control"></div>
+      <div class="col-12 mb-3"><label>Strengths</label>
+        <div><input type="checkbox" name="strengths" value="Confidence"> Confidence</div>
+        <div><input type="checkbox" name="strengths" value="Communication"> Communication</div>
+        <div><input type="checkbox" name="strengths" value="Leadership"> Leadership</div>
+      </div>
+      <div class="col-12 mb-3"><label>Weaknesses</label><input type="text" name="weaknesses" class="form-control"></div>
+      <div class="col-12 mb-3"><label>Interests</label><input type="text" name="interests" class="form-control"></div>
+      <div class="col-12 mb-3"><label>Fears</label><textarea name="fears" class="form-control"></textarea></div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Get Career Advice</button>
+  </form>
+</div>
+{% endblock %}

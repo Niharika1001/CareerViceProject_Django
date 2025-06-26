@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card p-4 form-detail">
+  <h2>Graduate Career Form</h2>
+  <form method="post" action="{% url 'submit_form' %}">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-6 mb-3"><label>Full Name</label><input type="text" name="full_name" class="form-control" required></div>
+      <div class="col-md-6 mb-3"><label>Gender</label>
+        <select name="gender" class="form-control"><option>Male</option><option>Female</option><option>Other</option></select>
+      </div>
+      <div class="col-md-6 mb-3"><label>Graduation Status</label>
+        <select name="graduation_status" class="form-control"><option>Completed</option><option>Pursuing</option></select>
+      </div>
+      <div class="col-md-6 mb-3"><label>Graduation Year</label><input type="number" name="graduation_year" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Degree Stream</label>
+        <select name="stream" class="form-control"><option>CSE</option><option>ECE</option><option>EEE</option><option>Mechanical</option><option>Civil</option><option>Others</option></select>
+      </div>
+      <div class="col-md-6 mb-3"><label>Certifications</label><input type="text" name="certifications" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Work Experience</label><input type="text" name="experience" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Skills</label><input type="text" name="skills" class="form-control"></div>
+      <div class="col-12 mb-3"><label>Preferred Domain</label><input type="text" name="domain" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Career Preferences</label>
+        <div><input type="checkbox" name="preferences" value="IT"> IT</div>
+        <div><input type="checkbox" name="preferences" value="Core"> Core Engineering</div>
+        <div><input type="checkbox" name="preferences" value="Research"> Research</div>
+        <div><input type="checkbox" name="preferences" value="Higher Studies"> Higher Studies</div>
+      </div>
+      <div class="col-md-6 mb-3"><label>Work Type</label>
+        <select name="work_type" class="form-control"><option>Remote</option><option>On-site</option><option>Hybrid</option></select>
+      </div>
+      <div class="col-md-6 mb-3"><label>Relocate</label>
+        <select name="relocate" class="form-control"><option>Yes</option><option>No</option><option>Maybe</option></select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Get Career Advice</button>
+  </form>
+</div>
+{% endblock %}

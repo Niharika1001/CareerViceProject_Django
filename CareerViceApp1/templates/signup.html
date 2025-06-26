@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f9fafb;
+    margin: 0;
+}
+
+.auth-wrapper {
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    margin-right: 200px;
+
+
+}
+
+.auth-wrapper .icon {
+    font-size: 2.5rem;
+    color: #001f3f;
+    margin-bottom: 1rem;
+}
+
+.auth-wrapper h2 {
+    font-weight: 900;
+    color: #001f3f;
+    margin-bottom: 0.25rem;
+}
+
+.auth-wrapper p {
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1.2rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper i {
+    position: absolute;
+    right: 12px;
+    top: 43%; 
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #555;
+    font-size: 1.1rem;
+}
+
+.auth-form button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #001f3f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.auth-wrapper a {
+    color: #4a007d;
+    font-weight: 500;
+    text-decoration: none;
+}
+.toast-message {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 250px;
+  max-width: 300px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  color: #fff;
+  font-weight: 500;
+  animation: fadeIn 0.5s ease;
+}
+
+.toast-message.success {
+  background-color: #28a745;
+}
+
+.toast-message.error,
+.toast-message.danger {
+  background-color: #dc3545;
+}
+
+.toast-close {
+  margin-left: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+</style>
+
+<!-- Include Bootstrap Icons if not already -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<div class="auth-page">
+    <div class="auth-wrapper">
+        <div class="icon">
+            <i class="bi bi-brain"></i>
+        </div>
+        <h2>Join CareerVice</h2>
+        <p>Create your account to get started</p>
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            {% for error in errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+            
+            <input type="text" name="username" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email address" required>
+
+            <div class="password-wrapper">
+                <input type="password" name="password1" id="password1" placeholder="Password" required>
+                <i class="bi bi-eye" id="togglePassword1"></i>
+            </div>
+
+            <input type="password" name="password2" placeholder="Confirm Password" required>
+
+            <button type="submit">Create account</button>
+
+            <p class="mt-2 text-center">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+        </form>
+    </div>
+</div>
+<div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="toast-message {{ message.tags }}">
+        {{ message }}
+        <span class="toast-close" onclick="this.parentElement.style.display='none';">&times;</span>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+<script>
+// Password toggle logic
+document.getElementById('togglePassword1').addEventListener('click', function () {
+    const passwordInput = document.getElementById('password1');
+    const type = passwordInput.type === 'password' ? 'text' : 'password';
+    passwordInput.type = type;
+    this.classList.toggle('bi-eye');
+    this.classList.toggle('bi-eye-slash');
+});
+ setTimeout(() => {
+    const toasts = document.querySelectorAll('.toast-message');
+    toasts.forEach(toast => {
+      toast.style.display = 'none';
+    });
+  }, 5000);
+</script>
+{% endblock %}

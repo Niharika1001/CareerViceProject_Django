@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card p-4 form-detail">
+  <h2>Postgraduate Career Form</h2>
+  <form method="post" action="{% url 'submit_form' %}">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-6 mb-3"><label>Full Name</label><input type="text" name="full_name" class="form-control" required></div>
+      <div class="col-md-6 mb-3"><label>Gender</label>
+        <select name="gender" class="form-control"><option>Male</option><option>Female</option><option>Other</option></select>
+      </div>
+      <div class="col-md-6 mb-3"><label>Postgraduation Status</label>
+        <select name="pg_status" class="form-control"><option>Completed</option><option>Pursuing</option></select>
+      </div>
+      <div class="col-md-6 mb-3"><label>Graduation Year</label><input type="number" name="graduation_year" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Specialization</label><input type="text" name="specialization" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Industry Experience (years)</label><input type="number" name="experience" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Certifications</label><input type="text" name="certifications" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Publications</label><input type="text" name="publications" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Strengths</label><input type="text" name="strengths" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Weaknesses</label><input type="text" name="weaknesses" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Career Direction</label>
+        <select name="career_goal" class="form-control"><option>Research</option><option>Corporate</option><option>Entrepreneurship</option><option>Teaching</option><option>Govt</option></select>
+      </div>
+      <div class="col-md-6 mb-3"><label>Work Type</label>
+        <select name="work_type" class="form-control"><option>Remote</option><option>On-site</option><option>Hybrid</option></select>
+      </div>
+      <div class="col-md-6 mb-3"><label>Relocate</label>
+        <select name="relocate" class="form-control"><option>Yes</option><option>No</option><option>Maybe</option></select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Get Career Advice</button>
+  </form>
+</div>
+{% endblock %}

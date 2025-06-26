@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card p-4 form-detail">
+  <h2>12th / Intermediate Career Form</h2>
+  <form method="post" action="{% url 'submit_form' %}">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-6 mb-3"><label>Full Name</label><input type="text" name="full_name" class="form-control" required></div>
+      <div class="col-md-6 mb-3"><label>Gender</label>
+        <select name="gender" class="form-control"><option>Male</option><option>Female</option><option>Other</option></select>
+      </div>
+      <div class="col-md-6 mb-3"><label>City</label><input type="text" name="city" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>State</label><input type="text" name="state" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Nationality</label><input type="text" name="nationality" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Religion</label><input type="text" name="religion" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Qualification Status</label>
+        <select name="qualification_status" class="form-control"><option>Completed</option><option>Pursuing</option></select>
+      </div>
+      <div class="col-md-6 mb-3"><label>Stream</label>
+        <select name="stream" class="form-control"><option>MPC</option><option>BiPC</option><option>Commerce</option><option>Arts</option><option>Others</option></select>
+      </div>
+      <div class="col-md-6 mb-3"><label>12th Score (%)</label><input type="number" name="score" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Programming / Courses</label><input type="text" name="courses" class="form-control" placeholder="e.g. Python, Java"></div>
+      <div class="col-md-6 mb-3"><label>Strengths</label>
+        <div><input type="checkbox" name="strengths" value="Confidence"> Confidence</div>
+        <div><input type="checkbox" name="strengths" value="Communication"> Communication</div>
+        <div><input type="checkbox" name="strengths" value="Leadership"> Leadership</div>
+      </div>
+      <div class="col-md-6 mb-3"><label>Weaknesses</label><input type="text" name="weaknesses" class="form-control"></div>
+      <div class="col-12 mb-3"><label>Interests</label><input type="text" name="interests" class="form-control"></div>
+      <div class="col-md-6 mb-3"><label>Work Type</label>
+        <select name="work_type" class="form-control"><option>Remote</option><option>On-site</option><option>Hybrid</option></select>
+      </div>
+      <div class="col-md-6 mb-3"><label>Willing to Relocate</label>
+        <select name="relocate" class="form-control"><option>Yes</option><option>No</option><option>Maybe</option></select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Get Career Advice</button>
+  </form>
+</div>
+{% endblock %}

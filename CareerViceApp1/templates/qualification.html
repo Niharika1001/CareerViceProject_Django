@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card p-4">
+  <h2>Select Qualification</h2>
+  <form method="post" action="{% url 'load_form' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+      <select name="qualification" class="form-control" required>
+        <option value="">--Select--</option>
+        <option value="10th">10th</option>
+        <option value="12th">12th / Intermediate</option>
+        <option value="grad">Graduate</option>
+        <option value="pg">Post Graduate</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Next</button>
+  </form>
+</div>
+{% endblock %}

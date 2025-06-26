@@ -10,12 +10,14 @@ from openai import OpenAI
 
 # OpenAI client for career suggestions
 client = OpenAI(api_key=settings.OPENAI_API_KEY, base_url="https://openrouter.ai/api/v1")
-
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Profile  # adjust if your Profile model is in a different app
+from .models import Prgeofile  # adjust if your Profile model is in a different app
 
 # 1. Signup View
 def signup_view(request):
@@ -118,9 +120,7 @@ def home_view(request):
 #     gender_choices = ["Male", "Female", "Other"]
 #     return render(request, "profile.html", {"profile": profile, "gender_choices": gender_choices})
 
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
+
 
 @login_required
 def profile_view(request):

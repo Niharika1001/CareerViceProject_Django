@@ -36,6 +36,7 @@ urlpatterns = [
     path('suggestions/', views.suggestions_view, name='suggestions'),
 
     # Result
-    path('result/', views.result_view, name='result'),  # You commented this earlier, needed for "View Details" button
+    path('result/', views.result_view, name='result'),
+    path('suggestion/<int:id>/', views.view_suggestion, name='view_suggestion'), 
 ]
 

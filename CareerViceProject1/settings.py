@@ -207,7 +207,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # ========== GLOBAL SETTINGS ==========
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+# settings.py
+TIME_ZONE = 'Asia/Kolkata'  
 USE_I18N = True
 USE_TZ = True
 

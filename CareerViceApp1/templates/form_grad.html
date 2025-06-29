@@ -1,39 +1,259 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="card p-4 form-detail">
-  <h2>Graduate Career Form</h2>
-  <form method="post" action="{% url 'submit_form' %}">
-    {% csrf_token %}
-    <div class="row">
-      <div class="col-md-6 mb-3"><label>Full Name</label><input type="text" name="full_name" class="form-control" required></div>
-      <div class="col-md-6 mb-3"><label>Gender</label>
-        <select name="gender" class="form-control"><option>Male</option><option>Female</option><option>Other</option></select>
+
+<!-- Include same CSS from form_12.html -->
+<style>
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+  .form-box {
+    max-width: 850px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .form-box h2 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 0.3rem;
+    text-align: left;
+  }
+
+  .form-box p.intro {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 1.8rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .section-heading i {
+    font-size: 1.3rem;
+  }
+
+  .section-subtext {
+    font-size: 0.95rem;
+    color: #666;
+    margin: 0.5rem 0 1rem;
+    margin-left: 2rem;
+  }
+
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(28%, 1fr));
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+
+  @media(max-width: 768px) {
+    .checkbox-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .checkbox-option {
+    position: relative;
+    padding: 8px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+  }
+
+  .checkbox-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .checkbox-option:hover { background: #f8f8f8; }
+
+  .status .checkbox-option:hover { background: #fff8dc; border-color: #f1c40f; }
+  .status .checkbox-option.selected { background: #f1c40f; color: white; }
+
+  .specialization .checkbox-option:hover { background: #e8ecf3; border-color: #34495e; }
+  .specialization .checkbox-option.selected { background: #34495e; color: white; }
+
+  .interests .checkbox-option:hover { background: #ffe6e6; border-color: #e74c3c; }
+  .interests .checkbox-option.selected { background: #e74c3c; color: white; }
+
+  .strengths .checkbox-option:hover { background: #d4edda; border-color: #28a745; }
+  .strengths .checkbox-option.selected { background: #28a745; color: white; }
+
+  .concerns .checkbox-option:hover { background: #fff3cd; border-color: #fd7e14; }
+  .concerns .checkbox-option.selected { background: #fd7e14; color: white; }
+
+  .form-control, select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .form-control:focus, select:focus {
+    border-color: #003366;
+    outline: none;
+  }
+
+  select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path fill="%23999" d="M4 6l4 4 4-4z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+  }
+
+  .flex-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+
+  .flex-row > div {
+    flex: 1 1 48%;
+  }
+
+  .btn-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background: #003366;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 2rem;
+  }
+
+  .btn-submit i {
+    margin-right: 8px;
+  }
+
+  .btn-submit:hover {
+    background: #00509e;
+  }
+
+  .submit-wrapper {
+    text-align: center;
+  }
+</style>
+
+<div class="form-box">
+  <h2><i class="fas fa-graduation-cap" style="color:#003366;"></i> Graduation Career Form</h2>
+  <p class="intro">Your education, strengths, and interests help us provide personalized career guidance.</p>
+
+  <form method="POST" action="{% url 'submit_form' %}">{% csrf_token %}
+
+    <!-- Status -->
+    <div class="section-heading status"><i class="fas fa-circle-check" style="color:#f1c40f;"></i> Status</div>
+    <div class="checkbox-grid status">
+      {% for item in status_list %}
+        <label class="checkbox-option"><input type="radio" name="status" value="{{ item }}"> {{ item }}</label>
+      {% endfor %}
+    </div>
+
+    <!-- Specialization -->
+    <div class="section-heading specialization"><i class="fas fa-cogs" style="color:#34495e;"></i> Specialization</div>
+    <div class="checkbox-grid specialization">
+      {% for item in specialization_list %}
+        <label class="checkbox-option"><input type="radio" name="specialization" value="{{ item }}"> {{ item }}</label>
+      {% endfor %}
+    </div>
+
+    <!-- Interests -->
+    <div class="section-heading interests"><i class="fas fa-heart" style="color:#e74c3c;"></i> Interests</div>
+    <div class="section-subtext">Select areas that genuinely interest you</div>
+    <div class="checkbox-grid interests">
+      {% for item in interests_list %}
+        <label class="checkbox-option"><input type="checkbox" name="interests" value="{{ item }}"> {{ item }}</label>
+      {% endfor %}
+    </div>
+
+    <!-- Strengths -->
+    <div class="section-heading strengths"><i class="fas fa-bolt" style="color:#f1c40f;"></i> Strengths</div>
+    <div class="section-subtext">What are you naturally good at?</div>
+    <div class="checkbox-grid strengths">
+      {% for item in strengths_list %}
+        <label class="checkbox-option"><input type="checkbox" name="strengths" value="{{ item }}"> {{ item }}</label>
+      {% endfor %}
+    </div>
+
+    <!-- Concerns -->
+    <div class="section-heading concerns"><i class="fas fa-exclamation-triangle" style="color:#fd7e14;"></i> Concerns</div>
+    <div class="section-subtext">What aspects of work worry you?</div>
+    <div class="checkbox-grid concerns">
+      {% for item in concerns_list %}
+        <label class="checkbox-option"><input type="checkbox" name="concerns" value="{{ item }}"> {{ item }}</label>
+      {% endfor %}
+    </div>
+
+    <!-- Field of Study & Job Type -->
+    <div class="flex-row">
+      <div>
+        <label><i class="fas fa-book-open"></i> Field of Study</label>
+        <input type="text" name="field_of_study" class="form-control" placeholder="e.g., Biotechnology, Law, etc.">
       </div>
-      <div class="col-md-6 mb-3"><label>Graduation Status</label>
-        <select name="graduation_status" class="form-control"><option>Completed</option><option>Pursuing</option></select>
-      </div>
-      <div class="col-md-6 mb-3"><label>Graduation Year</label><input type="number" name="graduation_year" class="form-control"></div>
-      <div class="col-md-6 mb-3"><label>Degree Stream</label>
-        <select name="stream" class="form-control"><option>CSE</option><option>ECE</option><option>EEE</option><option>Mechanical</option><option>Civil</option><option>Others</option></select>
-      </div>
-      <div class="col-md-6 mb-3"><label>Certifications</label><input type="text" name="certifications" class="form-control"></div>
-      <div class="col-md-6 mb-3"><label>Work Experience</label><input type="text" name="experience" class="form-control"></div>
-      <div class="col-md-6 mb-3"><label>Skills</label><input type="text" name="skills" class="form-control"></div>
-      <div class="col-12 mb-3"><label>Preferred Domain</label><input type="text" name="domain" class="form-control"></div>
-      <div class="col-md-6 mb-3"><label>Career Preferences</label>
-        <div><input type="checkbox" name="preferences" value="IT"> IT</div>
-        <div><input type="checkbox" name="preferences" value="Core"> Core Engineering</div>
-        <div><input type="checkbox" name="preferences" value="Research"> Research</div>
-        <div><input type="checkbox" name="preferences" value="Higher Studies"> Higher Studies</div>
-      </div>
-      <div class="col-md-6 mb-3"><label>Work Type</label>
-        <select name="work_type" class="form-control"><option>Remote</option><option>On-site</option><option>Hybrid</option></select>
-      </div>
-      <div class="col-md-6 mb-3"><label>Relocate</label>
-        <select name="relocate" class="form-control"><option>Yes</option><option>No</option><option>Maybe</option></select>
+      <div>
+        <label><i class="fas fa-briefcase"></i> Preferred Job Type</label>
+        <select name="preferred_job_type" class="form-control">
+          <option>Select Job Type</option>
+          <option>Full-time</option>
+          <option>Part-time</option>
+          <option>Freelance</option>
+          <option>Remote</option>
+          <option>Startup</option>
+          <option>Corporate</option>
+          <option>Government</option>
+          <option>Non-profit</option>
+        </select>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary w-100">Get Career Advice</button>
+
+    <!-- Submit -->
+    <div class="submit-wrapper">
+      <button type="submit" class="btn-submit"><i class="fab fa-telegram"></i> Get Career Advice</button>
+    </div>
   </form>
 </div>
+
+<script>
+  document.querySelectorAll('.checkbox-option input').forEach(input => {
+    input.addEventListener('change', () => {
+      const grid = input.closest('.checkbox-grid');
+      if (input.type === 'radio') {
+        grid.querySelectorAll('.checkbox-option').forEach(el => el.classList.remove('selected'));
+        if (input.checked) input.parentElement.classList.add('selected');
+      } else {
+        input.parentElement.classList.toggle('selected', input.checked);
+      }
+    });
+  });
+
+  // Restore state if page reloads
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.checkbox-option input').forEach(input => {
+      if (input.checked) input.parentElement.classList.add('selected');
+    });
+  });
+</script>
+
 {% endblock %}

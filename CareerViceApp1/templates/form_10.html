@@ -1,34 +1,262 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="card p-4 form-detail">
-  <h2>10th Class Career Form</h2>
-  <form method="post" action="{% url 'submit_form' %}">
+
+<style>
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+  .form-box {
+    max-width: 850px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .form-box h2 {
+    text-align: center;
+    color: #003366;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-desc {
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+    color: #666;
+    margin-left: 28px;
+  }
+
+  .checkbox-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-start;
+  }
+
+  .checkbox-option {
+    flex: 0 0 calc(33.333% - 12px);
+    padding: 12px 18px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    border: 1.5px solid #ccc;
+    font-size: 0.95rem;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+  }
+
+  .checkbox-option input {
+    display: none;
+  }
+
+  /* Strengths - Green */
+  .strengths .checkbox-option:hover {
+    border-color: #84cc16;
+    background-color: #ecfdf5;
+  }
+  .strengths .checkbox-option.selected {
+    background-color: #22c55e;
+    color: white;
+    border-color: #22c55e;
+  }
+
+  /* Concerns - Orange */
+  .concerns .checkbox-option:hover {
+    border-color: #f97316;
+    background-color: #fff7ed;
+  }
+  .concerns .checkbox-option.selected {
+    background-color: #fb923c;
+    color: white;
+    border-color: #fb923c;
+  }
+
+  /* Interests - Red */
+  .interests .checkbox-option:hover {
+    border-color: #f43f5e;
+    background-color: #ffe4e6;
+  }
+  .interests .checkbox-option.selected {
+    background-color: #f43f5e;
+    color: white;
+    border-color: #f43f5e;
+  }
+
+  /* Status - Yellow */
+  .status .checkbox-option:hover {
+    background-color: #fff8dc;
+    border-color: #ffd966;
+  }
+  .status .checkbox-option.selected {
+    background-color: #ffd966;
+    color: white;
+    border-color: #ffd966;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-top: 0.3rem;
+    transition: border-color 0.2s;
+  }
+
+  .form-control:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  .input-pair {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .btn-primary {
+    margin: 2rem auto 0;
+    display: block;
+    padding: 0.6rem 1.2rem;
+    background: #003366;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: fit-content;
+  }
+
+  .btn-primary i {
+    margin-right: 8px;
+  }
+
+  .btn-primary:hover {
+    background: #002244;
+  }
+
+  @media (max-width: 768px) {
+    .checkbox-option {
+      flex: 0 0 calc(50% - 12px);
+    }
+    .status .checkbox-option {
+      flex: 0 0 calc(50% - 12px);
+    }
+    .input-pair {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="form-box">
+  <h2><i class="fa-solid fa-graduation-cap"></i> 10th Class Career Form</h2>
+
+  <form method="POST" action="{% url 'submit_form' %}">
     {% csrf_token %}
-    <div class="row">
-      <div class="col-md-6 mb-3"><label>Full Name</label><input type="text" name="full_name" class="form-control" required></div>
-      <div class="col-md-6 mb-3"><label>Gender</label>
-        <select name="gender" class="form-control" required>
-          <option value="">Select</option><option>Male</option><option>Female</option><option>Other</option>
-        </select>
-      </div>
-      <div class="col-md-6 mb-3"><label>City</label><input type="text" name="city" class="form-control"></div>
-      <div class="col-md-6 mb-3"><label>State</label><input type="text" name="state" class="form-control"></div>
-      <div class="col-md-6 mb-3"><label>Qualification Status</label>
-        <select name="qualification_status" class="form-control" required>
-          <option value="">Select</option><option>Completed</option><option>Discontinued</option>
-        </select>
-      </div>
-      <div class="col-md-6 mb-3"><label>Rank (if any)</label><input type="text" name="rank" class="form-control"></div>
-      <div class="col-12 mb-3"><label>Strengths</label>
-        <div><input type="checkbox" name="strengths" value="Confidence"> Confidence</div>
-        <div><input type="checkbox" name="strengths" value="Communication"> Communication</div>
-        <div><input type="checkbox" name="strengths" value="Leadership"> Leadership</div>
-      </div>
-      <div class="col-12 mb-3"><label>Weaknesses</label><input type="text" name="weaknesses" class="form-control"></div>
-      <div class="col-12 mb-3"><label>Interests</label><input type="text" name="interests" class="form-control"></div>
-      <div class="col-12 mb-3"><label>Fears</label><textarea name="fears" class="form-control"></textarea></div>
+
+    <!-- Qualification Status -->
+    <label class="section-label"><i class="fa-solid fa-bullseye text-warning"></i> Qualification Status</label>
+    <div class="checkbox-grid status" id="status-options">
+      <div class="checkbox-option"><input type="radio" name="qualification_status" value="Completed">Completed</div>
+      <div class="checkbox-option"><input type="radio" name="qualification_status" value="Ongoing">Ongoing</div>
+      <div class="checkbox-option"><input type="radio" name="qualification_status" value="Discontinued">Discontinued</div>
     </div>
-    <button type="submit" class="btn btn-primary w-100">Get Career Advice</button>
+
+    <!-- Strengths -->
+    <label class="section-label"><i class="fa-solid fa-bolt-lightning" style="color: #facc15;"></i> Strengths</label>
+    <p class="section-desc">What are you naturally good at?</p>
+    <div class="checkbox-grid strengths" id="strengths-options">
+      {% for item in strengths_list %}
+      <div class="checkbox-option"><input type="checkbox" name="strengths" value="{{ item }}">{{ item }}</div>
+      {% endfor %}
+    </div>
+
+    <!-- Concerns -->
+    <label class="section-label"><i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i> Concerns</label>
+    <p class="section-desc">What aspects of work worry you?</p>
+    <div class="checkbox-grid concerns" id="concerns-options">
+      {% comment %} Fixed list as per request {% endcomment %}
+      <div class="checkbox-option"><input type="checkbox" name="concerns" value="Public Speaking">Public Speaking</div>
+      <div class="checkbox-option"><input type="checkbox" name="concerns" value="Job Security">Job Security</div>
+      <div class="checkbox-option"><input type="checkbox" name="concerns" value="Work-Life Balance">Work-Life Balance</div>
+      <div class="checkbox-option"><input type="checkbox" name="concerns" value="Technology Changes">Technology Changes</div>
+      <div class="checkbox-option"><input type="checkbox" name="concerns" value="Time Management">Time Management</div>
+      <div class="checkbox-option"><input type="checkbox" name="concerns" value="Financial Stability">Financial Stability</div>
+    </div>
+
+    <!-- Interests -->
+    <label class="section-label"><i class="fa-solid fa-heart" style="color: red;"></i> Interests</label>
+    <p class="section-desc">Select areas that genuinely interest you</p>
+    <div class="checkbox-grid interests" id="interests-options">
+      {% for item in interests_list %}
+      <div class="checkbox-option"><input type="checkbox" name="interests" value="{{ item }}">{{ item }}</div>
+      {% endfor %}
+    </div>
+
+    <!-- Field of Study and Job Type -->
+    <div class="input-pair">
+      <div class="w-100">
+        <label class="section-label"><i class="fa-solid fa-book-open green"></i> Field of Study (if applicable)</label>
+        <input type="text" name="field_of_study" class="form-control" placeholder="e.g., Computer Science, Biology, Commerce">
+      </div>
+      <div class="w-100">
+        <label class="section-label"><i class="fa-solid fa-briefcase purple"></i> Preferred Job Type</label>
+        <select name="job_type" class="form-control">
+          <option value="">Select job type</option>
+          <option>Full Time</option>
+          <option>Part Time</option>
+          <option>Freelance</option>
+          <option>Remote</option>
+          <option>Startup</option>
+          <option>Corporate</option>
+          <option>Government</option>
+          <option>Nonprofit</option>
+        </select>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-primary">
+      <i class="fa-brands fa-telegram"></i> Get Career Advice
+    </button>
   </form>
 </div>
+
+<script>
+  ['strengths', 'concerns', 'interests'].forEach(section => {
+    document.querySelectorAll(`#${section}-options .checkbox-option`).forEach(option => {
+      option.addEventListener('click', () => {
+        const input = option.querySelector('input');
+        input.checked = !input.checked;
+        option.classList.toggle('selected', input.checked);
+      });
+    });
+  });
+
+  // Radio button behavior for status
+  document.querySelectorAll('#status-options .checkbox-option').forEach(option => {
+    option.addEventListener('click', () => {
+      document.querySelectorAll('#status-options .checkbox-option').forEach(el => {
+        el.classList.remove('selected');
+        el.querySelector('input').checked = false;
+      });
+      option.classList.add('selected');
+      option.querySelector('input').checked = true;
+    });
+  });
+</script>
+
 {% endblock %}

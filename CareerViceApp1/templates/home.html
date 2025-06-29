@@ -1,96 +1,261 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
+
 {% block content %}
-<div class="container-fluid dashboard-container">
-  <div class="card shadow-sm welcome-box mb-4">
-    <div class="card-body">
-      <h4 class="fw-bold">Welcome back, {{ request.user.get_full_name|default:request.user.username }}!</h4>
-      <p class="text-muted">Let’s plan your career journey.</p>
+<style>
+  body {
+    background-color: #f9fbfd;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .dashboard-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem;
+  width: 100%;
+}
+
+
+  .card-box {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+  }
+
+  .section-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .section-title i {
+    color: #f59e0b;
+    font-size: 1.25rem;
+    margin-right: 0.5rem;
+  }
+
+  .suggestion-box {
+    background: #eef4ff;
+    padding: 1rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    color: #1e293b;
+    line-height: 1.6;
+  }
+
+  .suggestion-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #475569;
+  }
+
+  .btn-view {
+    background-color: #0f172a;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: 0.2s ease;
+  }
+
+  .btn-view:hover {
+    background-color: #1e293b;
+  }
+
+  /* ===== QUALIFICATION CARDS ===== */
+  .qual-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Fix: only 2 per row */
+    gap: 1rem;
+  }
+
+  .qual-box {
+    border: 1px solid #e5e7eb !important;             
+    border-radius: 14px;
+    padding: 1.2rem 1.25rem;
+    background: #ffffff !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+    text-align: left;
+    color: #111827;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease;
+    margin: 8px 0;
+  }
+
+  .qual-box:hover {
+    background-color: #f9fafb;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-color: #d1d5db; 
+
+  }
+
+  .qual-box .qual-left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .qual-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+    color:black;
+  }
+
+  .qual-sub {
+    font-size: 0.85rem;
+    color: #64748b;
+  }
+
+  .qual-btn {
+    font-size: 1.4rem;
+    color: #0f172a;
+    margin-left: 1rem;
+  }
+
+  /* QUICK ACTIONS */
+  .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* force 2 per row */
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .action-box {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 1rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: #0f172a;
+    transition: 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+    text-decoration: none; /* REMOVE underline */
+  }
+
+  .action-box:hover {
+    background: #f1f5f9;
+    cursor: pointer;
+  }
+
+  .action-box i {
+    font-size: 1.3rem;
+    color: #0ea5e9;
+  }
+
+  a {
+    text-decoration: none; /* REMOVE underline globally */
+    color: inherit;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
+    .qual-grid, .quick-actions {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+
+<div class="dashboard-container">
+  <!-- Welcome Message -->
+  <div class="card-box">
+    <div class="section-title">
+      Welcome back, {{ request.user.get_full_name|default:request.user.username }}!
     </div>
+    <div style="color: #64748b;">Ready to explore your career path?</div>
   </div>
 
-  <!-- Dashboard Quick Links -->
-  <div class="row g-4">
-
-    <div class="col-md-3">
-      <a href="{% url 'load_form' %}" onclick="event.preventDefault(); document.getElementById('quiz-form').submit();" class="card text-center text-decoration-none shadow-sm h-100">
-        <div class="card-body">
-          <i class="bi bi-lightbulb-fill icon-lg text-primary fs-1 mb-2"></i>
-          <h5 class="fw-semibold">Take Quiz</h5>
-          <p class="text-muted small">Get personalized AI career suggestions</p>
-        </div>
-      </a>
-      <form id="quiz-form" method="post" action="{% url 'load_form' %}">
-        {% csrf_token %}
-        <input type="hidden" name="qualification" value="10th">
-      </form>
-    </div>
-
-    <div class="col-md-3">
-      <a href="{% url 'profile' %}" class="card text-center text-decoration-none shadow-sm h-100">
-        <div class="card-body">
-          <i class="bi bi-person-circle icon-lg text-success fs-1 mb-2"></i>
-          <h5 class="fw-semibold">Profile</h5>
-          <p class="text-muted small">View and update your details</p>
-        </div>
-      </a>
-    </div>
-
-    <div class="col-md-3">
-      <a href="{% url 'suggestions' %}" class="card text-center text-decoration-none shadow-sm h-100">
-        <div class="card-body">
-          <i class="bi bi-clipboard-data icon-lg text-warning fs-1 mb-2"></i>
-          <h5 class="fw-semibold">Previous Suggestions</h5>
-          <p class="text-muted small">Check your AI career history</p>
-        </div>
-      </a>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card text-center shadow-sm h-100">
-        <div class="card-body">
-          <i class="bi bi-mortarboard-fill icon-lg text-info fs-1 mb-2"></i>
-          <h5 class="fw-semibold">Qualifications</h5>
-          <p class="text-muted small">Choose your education level</p>
-          <div class="d-grid gap-2 mt-2">
-            <form method="post" action="{% url 'load_form' %}">{% csrf_token %}
-              <input type="hidden" name="qualification" value="10th">
-              <button class="btn btn-outline-dark btn-sm w-100 mb-1" type="submit">10th</button>
-            </form>
-            <form method="post" action="{% url 'load_form' %}">{% csrf_token %}
-              <input type="hidden" name="qualification" value="12th">
-              <button class="btn btn-outline-dark btn-sm w-100 mb-1" type="submit">12th</button>
-            </form>
-            <form method="post" action="{% url 'load_form' %}">{% csrf_token %}
-              <input type="hidden" name="qualification" value="grad">
-              <button class="btn btn-outline-dark btn-sm w-100 mb-1" type="submit">Graduate</button>
-            </form>
-            <form method="post" action="{% url 'load_form' %}">{% csrf_token %}
-              <input type="hidden" name="qualification" value="pg">
-              <button class="btn btn-outline-dark btn-sm w-100" type="submit">Post Graduate</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Latest Suggestion Card (Optional) -->
+  <!-- Latest Suggestion -->
   {% if last_suggestion %}
-  <div class="card shadow-sm mt-5">
-    <div class="card-header bg-white">
-      <h6 class="fw-semibold"><i class="bi bi-info-circle me-2"></i>Latest Suggestion</h6>
+  <div class="card-box">
+    <div class="section-title">
+      <i class="bi bi-info-circle-fill"></i> Your Latest Career Suggestion
     </div>
-    <div class="card-body">
-      <p class="text-muted small mb-2">Based on your {{ last_suggestion.input_data.level|default:"10th" }}:</p>
-      <div class="border rounded p-3 bg-light">{{ last_suggestion.suggestion|truncatechars:250 }}</div>
-      <div class="d-flex justify-content-between align-items-center mt-3">
-        <small class="text-muted">Created: {{ last_suggestion.created_at|date:"F j, Y" }}</small>
-        <a href="{% url 'result' %}" class="btn btn-outline-primary btn-sm">View Full</a>
-      </div>
+    <div class="suggestion-box">
+      Based on your profile as a student completing {{ last_suggestion.input_data.level|default:"10th" }}, here are personalized career suggestions:<br>
+      {{ last_suggestion.suggestion|truncatechars:200 }}
+    </div>
+    <div class="suggestion-footer">
+      <span>Level: {{ last_suggestion.input_data.level|default:"10th" }} • {{ last_suggestion.created_at|date:"n/j/Y" }}</span>
+      <a href="{% url 'result' %}" class="btn-view">View Full →</a>
     </div>
   </div>
   {% endif %}
 
+  <!-- Get New Suggestion -->
+  <div class="card-box">
+    <div class="section-title">
+      <i class="bi bi-lightbulb-fill"></i> Get New Career Suggestion
+    </div>
+    <p style="color: #64748b;">Choose your education level to get personalized career advice from our AI advisor.</p>
+    <div class="qual-grid">
+      {% with qualifications="10th,12th,grad,pg" %}
+      {% for q in qualifications|split %}
+      <form method="post" action="{% url 'load_form' %}">
+        {% csrf_token %}
+        <input type="hidden" name="qualification" value="{{ q }}">
+        <button type="submit" class="qual-box">
+          <div class="qual-left">
+            <div class="qual-title">
+               {% if q == "10th" %}
+                  <i class="bi bi-mortarboard-fill" style="margin-right:6px; color:#0ea5e9;"></i>10th Grade
+               {% elif q == "12th" %}
+                  <i class="bi bi-mortarboard-fill" style="margin-right:6px; color:#0ea5e9;"></i>12th Grade
+               {% elif q == "grad" %}
+                  <i class="bi bi-briefcase-fill" style="margin-right:6px; color:#10b981;"></i>Graduate
+               {% else %}
+                  <i class="bi bi-award-fill" style="margin-right:6px; color:#a855f7;"></i>Post Graduate
+                {% endif %}
+             </div>
+
+            <div class="qual-sub">
+              {% if q == "10th" %}For students completing 10th grade{% elif q == "12th" %}For students completing 12th grade{% elif q == "grad" %}For college graduates{% else %}For post-graduate students{% endif %}
+            </div>
+          </div>
+          <div class="qual-btn"><i class="bi bi-arrow-right-circle-fill"></i></div>
+        </button>
+      </form>
+      {% endfor %}
+      {% endwith %}
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <a href="{% url 'profile' %}" class="action-box">
+      <i class="bi bi-person-circle"></i>
+      <div>
+        <strong>Complete Profile</strong><br>
+        Update your information
+      </div>
+    </a>
+    <a href="{% url 'suggestions' %}" class="action-box">
+      <i class="bi bi-clock-history"></i>
+      <div>
+        <strong>View History</strong><br>
+        See past suggestions
+      </div>
+    </a>
+  </div>
 </div>
 {% endblock %}

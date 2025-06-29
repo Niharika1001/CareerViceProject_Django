@@ -1,33 +1,158 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
 {% block content %}
-<div class="card p-4">
-  <h3 class="mb-4">Previous Career Suggestions</h3>
+<style>
+  .suggestions-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .suggestion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .suggestion-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #0d47a1;
+  }
+
+  .new-suggestion-btn {
+    background-color: #002f6c;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .suggestion-card {
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .suggestion-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 1rem;
+  }
+
+  .badge-category {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 13px;
+    background-color: #edf2ff;
+    color: #2b4eff;
+    border-radius: 30px;
+    margin: 3px 5px 3px 0;
+  }
+
+  .badge-strength {
+    background-color: #e6f4ea;
+    color: #1e6f43;
+  }
+
+  .suggestion-snippet {
+    font-size: 14px;
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-top: 0.8rem;
+  }
+
+  .view-full-btn {
+    margin-top: 0.9rem;
+    text-align: right;
+  }
+  .view-full-btn :hover{
+    color:#002f6c;
+  }
+  .view-full-btn a {
+    font-size: 14px;
+    padding: 6px 12px;
+    border: 1px solid #0d6efd;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #0d6efd;
+    font-weight: 500;
+    
+  }
+
+  .no-suggestions {
+    text-align: center;
+    background-color: #f1f3f5;
+    padding: 2rem;
+    border-radius: 10px;
+    border: 1px dashed #ccc;
+  }
+</style>
+
+<div class="suggestions-container mt-4">
+  <div class="suggestion-header">
+    <h2>⏱️ Previous Suggestions</h2>
+    <a href="{% url 'home' %}" class="new-suggestion-btn">+ New Suggestion</a>
+  </div>
 
   {% if previous_suggestions %}
-    <div class="list-group">
-      {% for suggestion in previous_suggestions %}
-        <div class="list-group-item mb-3">
-          <h5 class="mb-2">Suggestion:</h5>
-          <p>{{ suggestion.suggestion }}</p>
-          <h6 class="mt-3">Your Inputs:</h6>
-          <ul class="list-group list-group-flush mb-3">
-            {% for key, value in suggestion.input_data.items %}
-              <li class="list-group-item d-flex justify-content-between">
-                <strong>{{ key|capfirst }}</strong>
-                <span>{{ value }}</span>
-              </li>
-            {% endfor %}
-          </ul>
-          <p class="text-muted">Submitted on: {{ suggestion.created_at|date:"d M Y, H:i" }}</p>
+    {% for suggestion in previous_suggestions %}
+      <div class="suggestion-card">
+        <div class="suggestion-title">{{ suggestion.title }}</div>
+        <div class="meta-row">
+          <span>📅 {{ suggestion.created_at|date:"M d, Y, h:i A" }}</span>
+          <span>🔢 #{{ forloop.counter }}</span>
         </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <div class="alert alert-info">No previous suggestions found.</div>
-  {% endif %}
 
-  <div class="mt-4 text-center">
-    <a href="{% url 'qualification' %}" class="btn btn-success">Take New Career Quiz</a>
-  </div>
+        <div class="row mb-2">
+          <div class="col-md-4">
+            <strong>Interests</strong><br>
+            {% for item in suggestion.input_data.interests|default:""|split_by_comma %}
+              <span class="badge-category">{{ item }}</span>
+            {% endfor %}
+          </div>
+          <div class="col-md-4">
+            <strong>Strengths</strong><br>
+            {% for item in suggestion.input_data.strengths|default:""|split_by_comma %}
+              <span class="badge-category badge-strength">{{ item }}</span>
+            {% endfor %}
+          </div>
+          <div class="col-md-4">
+            <strong>Field of Study</strong><br>
+            {{ suggestion.input_data.field_of_study|default:"Not specified" }}
+          </div>
+        </div>
+
+        <div class="suggestion-snippet">
+          <strong>AI Career Advice:</strong><br>
+          {{ suggestion.suggestion|truncatechars:300 }}
+        </div>
+
+        <div class="view-full-btn">
+          <a href="{% url 'view_suggestion' suggestion.id %}">View Full →</a>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="no-suggestions">
+      <p>You have no previous suggestions.</p>
+      <a href="{% url 'home' %}" class="btn btn-success mt-3">Take a New Career Quiz</a>
+    </div>
+  {% endif %}
 </div>
 {% endblock %}

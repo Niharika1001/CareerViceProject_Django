@@ -133,6 +133,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
+import os
+from decouple import config
+
 
 # ========== BASE PATH ==========
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -215,3 +218,18 @@ USE_TZ = True
 # ========== CUSTOM SETTINGS ==========
 OPENAI_API_KEY = config('OPENAI_API_KEY')  # Ensure .env is correctly placed
 LOGIN_URL = '/login/'  # Fixes redirect issues when user not authenticated
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
+
+# WhiteNoise for static file serving
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+
+# Static files settings for Render
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Security & Environment
+SECRET_KEY = config('SECRET_KEY', default='unsafe-secret-key')
+DEBUG = config('DEBUG', default=False, cast=bool)

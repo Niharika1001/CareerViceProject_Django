@@ -219,7 +219,7 @@ USE_TZ = True
 OPENAI_API_KEY = config('OPENAI_API_KEY')  # Ensure .env is correctly placed
 LOGIN_URL = '/login/'  # Fixes redirect issues when user not authenticated
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com', '.vercel.app']
 
 # WhiteNoise for static file serving
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')

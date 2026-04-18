@@ -167,7 +167,7 @@
       {% if error %}
         <div class="alert alert-danger">{{ error }}</div>
       {% else %}
-        {{ suggestion|safe }}
+        {{ suggestion|parse_markdown }}
       {% endif %}
     </div>
   </div>

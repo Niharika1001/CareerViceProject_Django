@@ -1,0 +1,71 @@
+# CareerVice AI
+
+CareerVice is an AI-powered career counseling application built with Django. It collects user background information—such as educational level (10th, 12th, or college degree), interests, and strengths—and dynamically generates a customized list of career paths perfectly tailored to the user's profile using advanced Large Language Models via OpenRouter.
+
+## 🛠️ Tech Stack & Architecture
+
+- **Backend:** Python + Django Framework
+- **Database:** SQLite (default Django DB for local dev)
+- **Frontend:** HTML, CSS, Bootstrap 5, and Django Templates
+- **Utilities:** 
+  - `whitenoise` for serving static files efficiently.
+  - Custom custom template tags/filters (i.e. `parse_markdown`) to correctly render Markdown into front-end HTML.
+- **AI Integration:** OpenRouter API specifically running `google/gemma-4-31b-it:free`. It replaces generic system implementations string generation with structured prompts and robust fallback measures.
+
+## ⚙️ Features
+
+- **User Authentication:** Complete Signup/Login/Logout flows.
+- **Dynamic Profile Intake:** Adaptive forms depending on the user's educational standing (e.g., 10th grade vs post-grad).
+- **Historical Analysis:** A database table (`CareerSuggestion`) tracks past generated suggestions, so users have a history log to revisit.
+- **AI Career Mapping:** The app makes a `POST` request to OpenRouter containing the user's answers and a rigidly structured system prompt. The view then converts the AI's Markdown (`**bold**` and `\n`) directly into formatted HTML.
+
+---
+
+## 🚀 How to Run the Application Locally
+
+Follow these step-by-step instructions to get the application running on your Windows machine:
+
+### 1. Prerequisites
+Ensure you have **Python 3.x** installed on your system. 
+
+### 2. Open the Terminal
+Navigate your terminal (Command Prompt or PowerShell) to the root folder of the project (`CareerViceProject1`).
+
+### 3. Activate the Virtual Environment
+The project relies on a virtual environment (`.venv`) to isolate dependencies. Activate it by running:
+```powershell
+.venv\Scripts\activate
+```
+*(You will see `(.venv)` string prepended to your command line input if successful).*
+
+### 4. Install Dependencies
+If you haven't already, install the required packages. Ensure the `whitenoise` module is available:
+```powershell
+pip install whitenoise requests openai django
+```
+
+### 5. Configure the Environment
+Ensure your `.env` file is present in the root folder with your OpenRouter API Key:
+```env
+OPENAI_API_KEY=sk-or-v1-...
+SECRET_KEY=...
+```
+
+### 6. Run Migrations (Optional)
+If this is the first time setting up the database, construct the tables via Django:
+```powershell
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### 7. Start the Development Server
+Power up the local development server:
+```powershell
+python manage.py runserver
+```
+
+### 8. View the Application
+Once the server is completely up, open a web browser and go to:
+[http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+
+> **Note:** If you edit the AI prompt models in `views.py` or the `custom_filters.py` module, the Django server will automatically detect the changes and reload.

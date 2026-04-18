@@ -140,7 +140,7 @@
 
         <div class="suggestion-snippet">
           <strong>AI Career Advice:</strong><br>
-          {{ suggestion.suggestion|truncatechars:300 }}
+          {{ suggestion.suggestion|parse_markdown|truncatewords_html:30 }}
         </div>
 
         <div class="view-full-btn">

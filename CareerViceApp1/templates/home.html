@@ -193,7 +193,7 @@
     </div>
     <div class="suggestion-box">
       Based on your profile as a student completing {{ last_suggestion.input_data.level|default:"10th" }}, here are personalized career suggestions:<br>
-      {{ last_suggestion.suggestion|truncatechars:200 }}
+      {{ last_suggestion.suggestion|parse_markdown|truncatewords_html:30 }}
     </div>
     <div class="suggestion-footer">
       <span>Level: {{ last_suggestion.input_data.level|default:"10th" }} • {{ last_suggestion.created_at|date:"n/j/Y" }}</span>

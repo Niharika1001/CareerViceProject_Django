@@ -5,157 +5,41 @@
   @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
   .form-box {
-    max-width: 850px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    font-family: 'Segoe UI', sans-serif;
+    max-width: 900px; margin: 2rem auto; padding: 3rem;
+    background: var(--bg-glass); backdrop-filter: blur(16px);
+    border: var(--border-delicate); border-radius: 20px;
+    box-shadow: var(--shadow-soft);
   }
-
   .form-box h2 {
-    font-size: 2.2rem;
-    font-weight: bold;
-    color: #003366;
-    margin-bottom: 0.3rem;
-    text-align: left;
+    text-align: center; color: var(--text-main); font-size: 2rem;
+    margin-bottom: 2rem; font-weight: 700;
   }
-
-  .form-box p.intro {
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 1.5rem;
+  .section-label {
+    font-size: 1.15rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.4rem;
+    display: flex; align-items: center; gap: 10px; color: var(--text-main);
   }
-
-  .section-heading {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 1.8rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #333;
-  }
-
-  .section-heading i {
-    font-size: 1.3rem;
-  }
-
-  .section-subtext {
-    font-size: 0.95rem;
-    color: #666;
-    margin: 0.5rem 0 1rem;
-    margin-left: 2rem;
-  }
-
-  .checkbox-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(28%, 1fr));
-    gap: 10px;
-    margin-bottom: 1rem;
-  }
-
-  @media(max-width: 768px) {
-    .checkbox-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
+  .section-desc { font-size: 0.9rem; margin-bottom: 1rem; color: var(--text-muted); margin-left: 28px; }
+  .checkbox-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-start; }
   .checkbox-option {
-    position: relative;
-    padding: 8px;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    cursor: pointer;
-    text-align: center;
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
+    flex: 0 0 calc(33.333% - 12px); padding: 12px 18px;
+    background: rgba(255, 255, 255, 0.4); border-radius: 12px; border: var(--border-delicate);
+    font-size: 0.95rem; text-align: center; cursor: pointer; user-select: none;
+    transition: all 0.3s ease; color: var(--text-muted);
   }
+  .checkbox-option input { display: none; }
+  .checkbox-option:hover { background: rgba(255,255,255,0.9); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
 
-  .checkbox-option input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-  }
+  /* Premium Selection States */
+  .strengths .checkbox-option.selected { background: rgba(129, 140, 117, 0.2); color: var(--accent-sage); border-color: var(--accent-sage); font-weight: 600; }
+  .concerns .checkbox-option.selected { background: rgba(168, 108, 90, 0.15); color: var(--accent-rust); border-color: var(--accent-rust); font-weight: 600; }
+  .interests .checkbox-option.selected { background: rgba(197, 168, 128, 0.2); color: var(--accent-gold); border-color: var(--accent-gold); font-weight: 600; }
+  .status .checkbox-option.selected { background: rgba(59, 51, 44, 0.1); color: var(--text-main); border-color: var(--text-main); font-weight: 600; }
 
-  .checkbox-option:hover { background: #f8f8f8; }
-
-  .status .checkbox-option:hover { background: #fff8dc; border-color: #f1c40f; }
-  .status .checkbox-option.selected { background: #f1c40f; color: white; }
-
-  .stream .checkbox-option:hover { background: #eaf4ff; border-color: #3498db; }
-  .stream .checkbox-option.selected { background: #3498db; color: white; }
-
-  .specialization .checkbox-option:hover { background: #e8ecf3; border-color: #34495e; }
-  .specialization .checkbox-option.selected { background: #34495e; color: white; }
-
-  .interests .checkbox-option:hover { background: #ffe6e6; border-color: #e74c3c; }
-  .interests .checkbox-option.selected { background: #e74c3c; color: white; }
-
-  .strengths .checkbox-option:hover { background: #d4edda; border-color: #28a745; }
-  .strengths .checkbox-option.selected { background: #28a745; color: white; }
-
-  .concerns .checkbox-option:hover { background: #fff3cd; border-color: #fd7e14; }
-  .concerns .checkbox-option.selected { background: #fd7e14; color: white; }
-
-  .form-control, select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-    transition: border-color 0.2s ease;
-  }
-
-  .form-control:focus, select:focus {
-    border-color: #003366;
-    outline: none;
-  }
-
-  select {
-    appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path fill="%23999" d="M4 6l4 4 4-4z"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px;
-  }
-
-  .flex-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 1.5rem;
-  }
-
-  .flex-row > div {
-    flex: 1 1 48%;
-  }
-
-  .btn-submit {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    background: #003366;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-top: 2rem;
-  }
-
-  .btn-submit i {
-    margin-right: 8px;
-  }
-
-  .btn-submit:hover {
-    background: #00509e;
-  }
-
-  .submit-wrapper {
-    text-align: center;
+  .input-pair { display: flex; gap: 1.5rem; margin-top: 2rem; }
+  @media (max-width: 768px) {
+    .checkbox-option, .status .checkbox-option { flex: 0 0 calc(50% - 12px); }
+    .input-pair { flex-direction: column; gap: 1rem; }
+    .form-box { padding: 1.5rem; }
   }
 </style>
 
@@ -220,11 +104,11 @@
     <div class="flex-row">
       <div>
         <label><i class="fas fa-book-open"></i> Field of Study</label>
-        <input type="text" name="field_of_study" class="form-control" placeholder="e.g., Computer Science">
+        <input type="text" name="field_of_study" class="form-control-premium" placeholder="e.g., Computer Science">
       </div>
       <div>
         <label><i class="fas fa-briefcase"></i> Preferred Job Type</label>
-        <select name="preferred_job_type" class="form-control">
+        <select name="preferred_job_type" class="form-control-premium">
           <option>Select Job Type</option>
           <option>Full-time</option>
           <option>Part-time</option>

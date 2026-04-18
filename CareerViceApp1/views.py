@@ -323,7 +323,7 @@ Only list. No long texts or paragraphs.
             }
 
             json_data = {
-                "model": "mistralai/mistral-7b-instruct",
+                "model": "google/gemma-4-31b-it:free",
                 "messages": [
                     {"role": "system", "content": "You are a helpful AI career advisor."},
                     {"role": "user", "content": prompt.strip()}
